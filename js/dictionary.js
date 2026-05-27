@@ -53,6 +53,26 @@
           throw err;
         }
         return data.map(normalizeEntry);
+      })
+      .then(function (entries) {
+        // 첫 entry에 발음기호가 없으면 Wiktionary에서 보충 (GA 우선).
+        // 실패해도 결과 자체에는 영향 없음.
+        if (entries[0] && !entries[0].phonetic && global.Wiktionary) {
+          return global.Wiktionary.getIPA(w)
+            .then(function (ipa) {
+              if (ipa) {
+                // 모든 entry의 빈 phonetic을 동일 IPA로 채움
+                entries.forEach(function (e) {
+                  if (!e.phonetic) e.phonetic = ipa;
+                });
+              }
+              return entries;
+            })
+            .catch(function () {
+              return entries;
+            });
+        }
+        return entries;
       });
   }
 
