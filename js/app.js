@@ -103,21 +103,6 @@
       head.appendChild(ph);
     }
 
-    if (entry.audio) {
-      var audioBtn = document.createElement('button');
-      audioBtn.type = 'button';
-      audioBtn.className = 'audio-btn';
-      audioBtn.title = 'Play pronunciation';
-      audioBtn.setAttribute('aria-label', 'Play pronunciation');
-      audioBtn.textContent = '🔊';
-      var audio = new Audio(entry.audio);
-      audioBtn.addEventListener('click', function () {
-        audio.currentTime = 0;
-        audio.play().catch(function () {});
-      });
-      head.appendChild(audioBtn);
-    }
-
     card.appendChild(head);
 
     // Meanings

@@ -18,7 +18,6 @@
    * NormalizedEntry = {
    *   word: string,
    *   phonetic: string,        // 예: "/ˌsɛrənˈdɪpɪti/"
-   *   audio: string,           // mp3 URL ("" 가능)
    *   meanings: Array<{
    *     partOfSpeech: string,
    *     definitions: Array<{ definition: string, example: string }>,
@@ -59,15 +58,15 @@
 
   function normalizeEntry(entry) {
     var phonetic = entry.phonetic || '';
-    var audio = '';
 
-    if (Array.isArray(entry.phonetics)) {
-      // 발음 기호와 오디오 중 가장 충실한 항목 고르기
+    if (!phonetic && Array.isArray(entry.phonetics)) {
+      // 발음 기호 찾기
       for (var i = 0; i < entry.phonetics.length; i++) {
         var p = entry.phonetics[i];
-        if (!phonetic && p && p.text) phonetic = p.text;
-        if (!audio && p && p.audio) audio = p.audio;
-        if (phonetic && audio) break;
+        if (p && p.text) {
+          phonetic = p.text;
+          break;
+        }
       }
     }
 
@@ -92,7 +91,6 @@
     return {
       word: entry.word || '',
       phonetic: phonetic,
-      audio: audio,
       meanings: meanings,
     };
   }

@@ -223,22 +223,6 @@ button {
   font-family: "SF Mono", "Monaco", "Menlo", monospace;
 }
 
-.audio-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  width: 36px;
-  height: 36px;
-  font-size: 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s;
-}
-.audio-btn:hover {
-  background: var(--chip-bg);
-}
-
 .meaning-block {
   margin-top: 20px;
   padding-top: 18px;
