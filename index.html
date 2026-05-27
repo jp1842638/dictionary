@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📖 English Dictionary</title>
+  <meta name="description" content="A free English-to-English dictionary web app." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">📖 English Dictionary</h1>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        🌙
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="search-section">
+      <form id="searchForm" class="search-form" autocomplete="off">
+        <input
+          id="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="Search an English word..."
+          aria-label="Search word"
+          spellcheck="false"
+          required
+        />
+        <button type="submit" class="search-button" aria-label="Search">🔎</button>
+      </form>
+
+      <div id="recent" class="recent" aria-label="Recent searches"></div>
+    </section>
+
+    <section id="status" class="status" aria-live="polite"></section>
+
+    <section id="result" class="result" aria-live="polite"></section>
+
+    <section class="hint">
+      <p>Try: <button class="suggest" data-word="serendipity">serendipity</button>
+        <button class="suggest" data-word="ephemeral">ephemeral</button>
+        <button class="suggest" data-word="meticulous">meticulous</button>
+        <button class="suggest" data-word="resilience">resilience</button>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        Powered by
+        <a href="https://dictionaryapi.dev/" target="_blank" rel="noopener">Free Dictionary API</a>
+        · Built with vanilla JS
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/dictionary.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
