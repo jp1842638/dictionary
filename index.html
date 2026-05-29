@@ -23,35 +23,113 @@
     </div>
   </header>
 
+  <nav class="tabs container" aria-label="Page tabs">
+    <button class="tab-btn active" data-tab="dictionary" type="button">Dictionary</button>
+    <button class="tab-btn" data-tab="translator" type="button">Translator</button>
+  </nav>
+
   <main class="container">
-    <section class="search-section">
-      <form id="searchForm" class="search-form" autocomplete="off">
-        <input
-          id="searchInput"
-          class="search-input"
-          type="text"
-          placeholder="Search an English word..."
-          aria-label="Search word"
-          spellcheck="false"
-          required
-        />
-        <button type="submit" class="search-button" aria-label="Search">🔎</button>
-      </form>
+    <!-- ===== Dictionary Page ===== -->
+    <div id="page-dictionary" class="page">
+      <section class="search-section">
+        <form id="searchForm" class="search-form" autocomplete="off">
+          <input
+            id="searchInput"
+            class="search-input"
+            type="text"
+            placeholder="Search an English word..."
+            aria-label="Search word"
+            spellcheck="false"
+            required
+          />
+          <button type="submit" class="search-button" aria-label="Search">🔎</button>
+        </form>
 
-      <div id="recent" class="recent" aria-label="Recent searches"></div>
-    </section>
+        <div id="recent" class="recent" aria-label="Recent searches"></div>
+      </section>
 
-    <section id="status" class="status" aria-live="polite"></section>
+      <section id="status" class="status" aria-live="polite"></section>
 
-    <section id="result" class="result" aria-live="polite"></section>
+      <section id="result" class="result" aria-live="polite"></section>
 
-    <section class="hint">
-      <p>Try: <button class="suggest" data-word="serendipity">serendipity</button>
-        <button class="suggest" data-word="ephemeral">ephemeral</button>
-        <button class="suggest" data-word="meticulous">meticulous</button>
-        <button class="suggest" data-word="nostalgia">nostalgia</button>
-      </p>
-    </section>
+      <section class="hint">
+        <p>Try: <button class="suggest" data-word="serendipity">serendipity</button>
+          <button class="suggest" data-word="ephemeral">ephemeral</button>
+          <button class="suggest" data-word="meticulous">meticulous</button>
+          <button class="suggest" data-word="nostalgia">nostalgia</button>
+        </p>
+      </section>
+    </div>
+
+    <!-- ===== Translator Page ===== -->
+    <div id="page-translator" class="page" hidden>
+      <section class="translator">
+        <div class="translator-row">
+          <div class="lang-box">
+            <select class="lang-select" id="srcLangSelect" aria-label="Source language">
+              <option value="auto">Auto-detect</option>
+              <option value="en" selected>English</option>
+              <option value="ko">Korean</option>
+              <option value="ja">Japanese</option>
+              <option value="zh-CN">Chinese (Simplified)</option>
+              <option value="zh-HK">Chinese (Hong Kong)</option>
+              <option value="pl">Polish</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+            </select>
+            <textarea
+              id="translatorSource"
+              class="lang-textarea"
+              placeholder="Type something to translate..."
+              spellcheck="false"
+              maxlength="500"
+            ></textarea>
+            <div class="lang-meta">
+              <span id="translatorCount">0 / 500</span>
+            </div>
+          </div>
+
+          <button id="swapLangBtn" class="swap-btn" type="button" aria-label="Swap languages" title="Swap languages">↔</button>
+
+          <div class="lang-box">
+            <select class="lang-select" id="tgtLangSelect" aria-label="Target language">
+              <option value="en">English</option>
+              <option value="ko" selected>Korean</option>
+              <option value="ja">Japanese</option>
+              <option value="zh-CN">Chinese (Simplified)</option>
+              <option value="zh-HK">Chinese (Hong Kong)</option>
+              <option value="pl">Polish</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+            </select>
+            <textarea
+              id="translatorTarget"
+              class="lang-textarea"
+              placeholder="Translation will appear here."
+              spellcheck="false"
+              readonly
+            ></textarea>
+            <div class="lang-meta">
+              <button id="copyResultBtn" class="copy-btn" type="button" title="Copy">📋 Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="translatorStatus" class="status" aria-live="polite"></div>
+
+        <div class="translator-actions">
+          <button id="translateBtn" class="search-button translate-btn" type="button">Translate</button>
+        </div>
+
+        <p class="translator-footnote">
+          Powered by
+          <a href="https://mymemory.translated.net/" target="_blank" rel="noopener">MyMemory</a>
+          · Free, no API key
+        </p>
+      </section>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -89,11 +167,26 @@
         </a>
       </div>
     </div>
+
+    <div class="modal" id="modalWarning" role="dialog" aria-modal="true" aria-labelledby="warningTitle" hidden>
+      <header class="modal-head">
+        <h3 id="warningTitle" class="modal-title">Heads up</h3>
+        <button class="modal-close" type="button" aria-label="Close">✕</button>
+      </header>
+      <div class="modal-body">
+        <p>⚠️ <strong>Warning:</strong> The translator might be stupid.</p>
+        <div class="modal-actions">
+          <button id="warningCancel" class="btn-secondary" type="button">Cancel</button>
+          <button id="warningOk" class="btn-primary" type="button">OK, got it</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="js/storage.js"></script>
   <script src="js/wiktionary.js"></script>
   <script src="js/dictionary.js"></script>
+  <script src="js/translator.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
