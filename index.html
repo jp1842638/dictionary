@@ -12,9 +12,14 @@
   <header class="site-header">
     <div class="container header-inner">
       <h1 class="logo">📖 English Dictionary</h1>
-      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-        🌙
-      </button>
+      <div class="header-actions">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+          🌙
+        </button>
+        <button id="settingsBtn" class="theme-toggle" aria-label="Settings" title="Settings">
+          ⚙️
+        </button>
+      </div>
     </div>
   </header>
 
@@ -58,6 +63,33 @@
       </p>
     </div>
   </footer>
+
+  <!-- Modal: Access denied / About (creator) -->
+  <div id="modalBackdrop" class="modal-backdrop" hidden>
+    <div class="modal" id="modalAccess" role="dialog" aria-modal="true" aria-label="Access" hidden>
+      <button class="modal-close" type="button" aria-label="Close">✕</button>
+      <div class="modal-body modal-body-center">
+        <div class="lock-icon" aria-hidden="true">🔒</div>
+        <p class="access-denied">Access denied.</p>
+      </div>
+    </div>
+
+    <div class="modal" id="modalAbout" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" hidden>
+      <header class="modal-head">
+        <h3 id="aboutTitle" class="modal-title">About</h3>
+        <button class="modal-close" type="button" aria-label="Close">✕</button>
+      </header>
+      <div class="modal-body">
+        <p>Hi. Do you like my dictionary?<br>
+          Then check the useful timer website that I made!</p>
+        <a class="modal-link"
+           href="https://jp1842638.github.io/simple-timer/"
+           target="_blank" rel="noopener">
+          🔗 jp1842638.github.io/simple-timer/
+        </a>
+      </div>
+    </div>
+  </div>
 
   <script src="js/storage.js"></script>
   <script src="js/wiktionary.js"></script>

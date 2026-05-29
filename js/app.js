@@ -11,6 +11,10 @@
   var $status = document.getElementById('status');
   var $result = document.getElementById('result');
   var $themeToggle = document.getElementById('themeToggle');
+  var $settingsBtn = document.getElementById('settingsBtn');
+  var $modalBackdrop = document.getElementById('modalBackdrop');
+  var $modalAccess = document.getElementById('modalAccess');
+  var $modalAbout = document.getElementById('modalAbout');
 
   /* ===== Theme ===== */
   function applyTheme(theme) {
@@ -198,12 +202,61 @@
       })
       .catch(function (err) {
         if (err && err.code === 'NOT_FOUND') {
-          showError('🤔 ' + err.message + ' Check the spelling and try again.');
+          // 1.5% 확률의 이스터에그 메시지
+          if (Math.random() < 0.015) {
+            showError('Huh? What the frick is "' + word + '"? Search properly, dude!');
+          } else {
+            showError('🤔 ' + err.message + ' Check the spelling and try again.');
+          }
         } else {
           showError('⚠️ ' + (err && err.message ? err.message : 'Something went wrong.'));
         }
       });
   }
+
+  /* ===== Settings / About modal (easter egg) ===== */
+  function openModal(which) {
+    $modalAccess.hidden = which !== 'access';
+    $modalAbout.hidden = which !== 'about';
+    $modalBackdrop.hidden = false;
+
+    // 닫기 버튼 포커스 (접근성)
+    var closeBtn = (which === 'access' ? $modalAccess : $modalAbout)
+      .querySelector('.modal-close');
+    if (closeBtn) {
+      try { closeBtn.focus(); } catch (e) {}
+    }
+  }
+
+  function closeModal() {
+    $modalBackdrop.hidden = true;
+    $modalAccess.hidden = true;
+    $modalAbout.hidden = true;
+  }
+
+  $settingsBtn.addEventListener('click', function () {
+    // 1.5% 확률로만 진짜 About 표시, 나머지는 Access denied
+    if (Math.random() < 0.015) {
+      openModal('about');
+    } else {
+      openModal('access');
+    }
+  });
+
+  // 백드롭(어두운 영역) 클릭 시 닫기 (모달 본체 클릭은 무시)
+  $modalBackdrop.addEventListener('click', function (e) {
+    if (e.target === $modalBackdrop) closeModal();
+  });
+
+  // ✕ 버튼들
+  document.querySelectorAll('.modal-close').forEach(function (btn) {
+    btn.addEventListener('click', closeModal);
+  });
+
+  // ESC 키로 닫기
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !$modalBackdrop.hidden) closeModal();
+  });
 
   /* ===== Events ===== */
   $form.addEventListener('submit', function (e) {
