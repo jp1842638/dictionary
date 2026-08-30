@@ -41,6 +41,12 @@
           notFound.code = 'NOT_FOUND';
           throw notFound;
         }
+        // 500번대(500, 502, 503, 522 등) → 서버 다운으로 취급
+        if (res.status >= 500) {
+          var down = new Error('Service down (' + res.status + ').');
+          down.code = 'SERVICE_DOWN';
+          throw down;
+        }
         if (!res.ok) {
           throw new Error('Network error (' + res.status + ').');
         }
@@ -73,6 +79,14 @@
             });
         }
         return entries;
+      })
+      .catch(function (err) {
+        // 이미 분류된 에러는 그대로 재throw
+        if (err && err.code) throw err;
+        // fetch 자체가 실패(TypeError 등) → 서버 다운으로 간주
+        var down = new Error('Service down.');
+        down.code = 'SERVICE_DOWN';
+        throw down;
       });
   }
 

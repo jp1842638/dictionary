@@ -68,9 +68,41 @@
       escapeHtml(word) +
       '"...';
   }
-  function showError(message) {
+  function showError(message, withRetry) {
     $status.className = 'status error';
-    $status.textContent = message;
+    $status.innerHTML = '';
+
+    var span = document.createElement('span');
+    span.textContent = message;
+    $status.appendChild(span);
+
+    if (withRetry) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'retry-btn';
+      btn.textContent = '🔁 Retry';
+      btn.addEventListener('click', function () {
+        search($input.value);
+      });
+      $status.appendChild(btn);
+    }
+  }
+
+  /**
+   * Free Dictionary API가 다운됐을 때 보여줄 문구를 확률에 따라 뽑는다.
+   *   49.5% : 친절
+   *   49.5% : 친근
+   *    1%   : 이스터에그
+   */
+  function pickServerDownMessage() {
+    var r = Math.random();
+    if (r < 0.495) {
+      return 'We are very sorry. The Free Dictionary API server is unavailable. Please try again next time.';
+    }
+    if (r < 0.99) {
+      return 'Uh-oh. I think the Free Dictionary API server is dead. Try again next time!';
+    }
+    return 'Nah, I think the Free Dictionary API server is dead.';
   }
   function clearStatus() {
     $status.className = 'status';
@@ -236,6 +268,9 @@
           } else {
             showError('🤔 ' + err.message + ' Check the spelling and try again.');
           }
+        } else if (err && err.code === 'SERVICE_DOWN') {
+          // Free Dictionary API 자체가 죽어있는 경우 — 재시도 버튼 함께 표시
+          showError('⚠️ ' + pickServerDownMessage(), true);
         } else {
           showError('⚠️ ' + (err && err.message ? err.message : 'Something went wrong.'));
         }
