@@ -524,6 +524,17 @@ button {
   color: var(--bg-elevated);
 }
 
+.slow-hint {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.slow-hint strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
 .spinner {
   display: inline-block;
   width: 18px;

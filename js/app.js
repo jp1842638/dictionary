@@ -61,14 +61,42 @@
   });
 
   /* ===== Status helpers ===== */
+  // 응답이 느릴 때 3초 후 뜨는 안내 메시지의 타이머
+  var _slowHintTimer = null;
+
+  function clearSlowHintTimer() {
+    if (_slowHintTimer) {
+      clearTimeout(_slowHintTimer);
+      _slowHintTimer = null;
+    }
+  }
+
   function showLoading(word) {
+    clearSlowHintTimer();
+
     $status.className = 'status';
     $status.innerHTML =
       '<span class="spinner" aria-hidden="true"></span>Searching for "' +
       escapeHtml(word) +
       '"...';
+
+    // 3초가 지나도 아직 로딩 중이면 "서버 느릴 수 있음" 안내를 추가
+    _slowHintTimer = setTimeout(function () {
+      _slowHintTimer = null;
+      // 그 사이 에러가 났거나(스피너 사라짐) 상태가 바뀌었으면 무시
+      if ($status.className.indexOf('error') !== -1) return;
+      if (!$status.querySelector('.spinner')) return;
+
+      var hint = document.createElement('div');
+      hint.className = 'slow-hint';
+      hint.innerHTML =
+        'Please wait. The server might be slow. ' +
+        '<strong>It may take 15~20 seconds or more.</strong>';
+      $status.appendChild(hint);
+    }, 3000);
   }
   function showError(message, withRetry) {
+    clearSlowHintTimer();
     $status.className = 'status error';
     $status.innerHTML = '';
 
@@ -105,6 +133,7 @@
     return 'Nah, I think the Free Dictionary API server is dead.';
   }
   function clearStatus() {
+    clearSlowHintTimer();
     $status.className = 'status';
     $status.textContent = '';
   }
